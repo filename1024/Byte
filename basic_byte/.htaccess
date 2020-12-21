@@ -1,0 +1,7 @@
+# todo a web/public/
+DirectoryIndex index.php
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+	RewriteRule  ^$ web/public/  [L]
+	RewriteRule  (.*) web/public/$1  [L]
+</IfModule>

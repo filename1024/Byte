@@ -1,0 +1,7 @@
+## todos nada
+User-agent: *
+Disallow: /
+
+## todos todo
+#User-agent: *
+#Allow: /

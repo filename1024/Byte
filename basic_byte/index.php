@@ -1,0 +1,1 @@
+<?php //mostrar esta página en blanco evitando que se liste el contenido del directorio.
