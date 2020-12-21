@@ -79,10 +79,10 @@ class View {
 
     $all_content = ob_get_contents();
     ob_end_clean();
+    $time_end = microtime(true);
 
     $trace = '';
     if (TRACE) {
-      $time_end = microtime(true);
       ob_start();
         echo '<pre id="trace" style="display: none">';
         var_dump($_SESSION);
