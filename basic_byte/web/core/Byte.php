@@ -35,9 +35,9 @@ class Byte {
     define('PATH_TOOL', PATH_CORE . 'tool' . DIRECTORY_SEPARATOR);
     // web/app/
     define('PATH_APP', PATH_WEB . 'app' . DIRECTORY_SEPARATOR);
-     // web/app/class/
-     define('PATH_CLASS', PATH_APP . 'class' . DIRECTORY_SEPARATOR);
-     // web/app/frame/
+    // web/app/class/
+    define('PATH_CLASS', PATH_APP . 'class' . DIRECTORY_SEPARATOR);
+    // web/app/frame/
     define('PATH_FRAME', PATH_APP . 'frame' . DIRECTORY_SEPARATOR);
     // web/app/lib/
     define('PATH_LIB', PATH_APP . 'lib' . DIRECTORY_SEPARATOR);
