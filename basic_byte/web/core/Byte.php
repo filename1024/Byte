@@ -138,7 +138,7 @@ class Byte {
 
   }
 
-  private static function _error_handler(int $num, string $msg, string $file, int $line) {
+  public static function _error_handler(int $num, string $msg, string $file, int $line) {
     echo '<pre id="error" style="display: none">' . $line. ': ' . $file. ': ' .$msg. ': ' . $num . '</pre>';
   }
 
