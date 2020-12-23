@@ -219,4 +219,21 @@ TXT;
     return self::$_frame;
   }
 
+  public static function block($path, $params = []) {
+    $block = PATH_BLOCK . $path . '.phtml';
+    // añadir el bloque
+    if (is_file($block)) {
+
+      ob_start();
+        extract($params, EXTR_OVERWRITE);
+        include $block;
+        $content = ob_get_contents();
+      ob_end_clean();
+      return $content;
+
+    } else if (ERROR_REPORTING) {
+       echo '<pre id="block" style="display: none">' . $block . '</pre>';
+    }
+  }
+
 }
