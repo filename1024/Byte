@@ -36,6 +36,8 @@ class Byte {
     define('PATH_TOOL', PATH_CORE . 'tool' . DIRECTORY_SEPARATOR);
     // web/app/
     define('PATH_APP', PATH_WEB . 'app' . DIRECTORY_SEPARATOR);
+    // web/app/block
+    define('PATH_BLOCK', PATH_APP . 'block' . DIRECTORY_SEPARATOR);
     // web/app/class/
     define('PATH_CLASS', PATH_APP . 'class' . DIRECTORY_SEPARATOR);
     // web/app/frame/
@@ -157,11 +159,11 @@ class Byte {
       ob_start();
       if (ERROR_REPORTING) {
         error_reporting(E_ALL | E_STRICT);
-        ini_set('display_errors', "On");
+        ini_set('display_errors', 'On');
         set_error_handler([__CLASS__, '_error_handler'], E_ALL | E_STRICT);
       } else {
         error_reporting(0);
-        ini_set('display_errors', "Off");
+        ini_set('display_errors', 'Off');
       }
 
       ini_set('session.cookie_lifetime', strval(SECONDS));
@@ -190,7 +192,7 @@ class Byte {
         header('X-Powered-By: Byte');
         setlocale(LC_TIME, 'es_ES.UTF-8');
         session_set_cookie_params($this->_cookie);
-        session_name("byte");
+        session_name('byte');
         session_start();
         $status = 404;
 
