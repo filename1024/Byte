@@ -73,9 +73,6 @@ class View {
       header("Cache-Control: post-check=0, pre-check=0", false);
       header("Pragma: no-cache");
     }
-    // limpiar respuesta
-    self::$_response = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', self::$_response);
-    self::$_response = trim(preg_replace('!(\s)+!', ' ', self::$_response),'\s\t\n\r\0\x0B');
 
     $all_content = ob_get_contents();
     ob_end_clean();
