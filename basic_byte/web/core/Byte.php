@@ -10,6 +10,7 @@ class Byte {
   private $_cache = TRUE;
   // sessión y cookie
   private $_seconds = (365 * 24 * 3600);
+  private $_cookie = [];
   private $_trace = FALSE;
   // redireciones
   private $_list_rewrite_requests = [];
@@ -60,6 +61,13 @@ class Byte {
     self::$action = $config->general['action'] ?? self::$action;
     self::$frame = $config->general['frame'] ?? self::$frame;
     self::$page_action = $config->general['page_action'] ?? self::$page_action;
+    // cookie
+    $this->_cookie['lifetime'] = $config->cookie['lifetime'] ?? $this->seconds;
+    $this->_cookie['path'] = $config->cookie['path'] ?? '/';
+    $this->_cookie['domain'] = $config->cookie['domain'] ?? $_SERVER['SERVER_NAME'];
+    $this->_cookie['secure'] = $config->cookie['secure'] ?? TRUE;
+    $this->_cookie['httponly'] = $config->cookie['httponly'] ?? TRUE;
+    $this->_cookie['samesite'] = $config->cookie['httponly'] ?? 'Lax';
     // redireciones
     $this->_list_rewrite_requests = $config->rewrite['list_rewrite_requests'] ?? $this->_list_rewrite_requests;
     // supervisor
@@ -181,8 +189,7 @@ class Byte {
         $this->_init();
         header('X-Powered-By: Byte');
         setlocale(LC_TIME, 'es_ES.UTF-8');
-        $life_time = time() + SECONDS;
-        setcookie(session_name(), session_id(), $life_time, '/', $_SERVER['SERVER_NAME'], TRUE);
+        session_set_cookie_params($this->_cookie);
         session_name("byte");
         session_start();
         $status = 404;
