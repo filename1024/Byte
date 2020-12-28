@@ -108,6 +108,8 @@ class View {
       self::$_response = preg_replace('/<\/head>/', implode('', self::$_head) . '</head>', self::$_response);
     }
 
+    self::$_response = Kit::min_html(self::$_response);
+
     echo self::$_response . $trace . $cache;
     exit();
 
