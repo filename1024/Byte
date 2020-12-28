@@ -2,17 +2,17 @@
 
 declare(strict_types = 1);
 
-namespace Tortulive;
+use TortuLive\View;
 
 ?><!DOCTYPE html>
 <html lang="<?= $_lang; ?>" dir="<?= $_dir; ?>">
 <head>
-  <?php View::head_meta(); ?>
+  <?php View::head(); ?>
   <meta content="IE=edge" http-equiv="X-UA-Compatible" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <link rel="icon" href="/favicon.ico">
 </head>
 <body>
-<?php echo View::content(); ?>
+<?= View::content(); ?>
 </body>
 </html>

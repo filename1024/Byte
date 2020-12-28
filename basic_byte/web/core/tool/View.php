@@ -9,7 +9,7 @@ class View {
   private static $_frame = '';
   private static $_page_action = '';
   private static $_contents = [];
-  private static $_head_meta = [];
+  private static $_head = [];
   private static $_response = '';
 
   public static function generate($status) {
@@ -77,6 +77,7 @@ class View {
     $all_content = ob_get_contents();
     ob_end_clean();
     $time_end = microtime(true);
+    self::$_response = $all_content . self::$_response;
 
     $trace = '';
     if (TRACE) {
@@ -103,7 +104,11 @@ class View {
       ob_end_clean();
     }
 
-    echo $all_content . self::$_response . $trace . $cache;
+    if (count(self::$_head) > 0) {
+      self::$_response = preg_replace('/<\/head>/', implode('', self::$_head) . '</head>', self::$_response);
+    }
+
+    echo self::$_response . $trace . $cache;
     exit();
 
   }
@@ -126,13 +131,13 @@ class View {
     Byte::$obj_supervisor = new $class();
   }
 
-  public static function add_head_meta($content) {
+  public static function add_head($content) {
     if (mb_strlen(trim($content)) > 0) {
-      self::$_head_meta[] = trim($content);
+      self::$_head[] = trim($content);
     }
   }
 
-  public static function head_meta() {
+  public static function head() {
 
     $charset = Byte::$obj_supervisor->_charset;
     $title = htmlspecialchars(Byte::$obj_supervisor->_title, ENT_QUOTES, "UTF-8");
@@ -142,41 +147,41 @@ class View {
     $generator = htmlspecialchars(Byte::$obj_supervisor->_generator, ENT_QUOTES, "UTF-8");
 
     if (mb_strlen(trim($charset)) > 0) {
-      self::$_head_meta[] = <<<TXT
+      self::$_head[] = <<<TXT
       <meta charset="$charset" />
 TXT;
     }
     if (mb_strlen(trim($title)) > 0) {
-      self::$_head_meta[] = <<<TXT
+      self::$_head[] = <<<TXT
       <title>$title</title>
 TXT;
     }
     if (mb_strlen(trim($description)) > 0) {
-      self::$_head_meta[] = <<<TXT
+      self::$_head[] = <<<TXT
       <meta content="$description" name="description" />
 TXT;
     }
     if (mb_strlen(trim($keywords)) > 0) {
-      self::$_head_meta[] = <<<TXT
+      self::$_head[] = <<<TXT
       <meta content="$keywords" name="keywords" />
 TXT;
     }
     if (mb_strlen(trim($author)) > 0) {
-      self::$_head_meta[] = <<<TXT
+      self::$_head[] = <<<TXT
       <meta content="$author" name="author" />
 TXT;
     }
     if (mb_strlen(trim($generator)) > 0) {
-      self::$_head_meta[] =  <<<TXT
+      self::$_head[] =  <<<TXT
       <meta content="$generator" name="generator" />
 TXT;
     }
 
-    if (count(self::$_head_meta) > 0) {
-      foreach(self::$_head_meta as $meta) {
+    if (count(self::$_head) > 0) {
+      foreach(self::$_head as $meta) {
         echo $meta . PHP_EOL;
       }
-      self::$_head_meta = [];
+      self::$_head = [];
     }
 
   }
