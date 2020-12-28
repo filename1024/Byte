@@ -14,9 +14,10 @@ class SupervisorRoot {
   public $_title = '';
   public $_description = '';
   public $_keywords = '';
+  public $_device = '';
 
   public function  __construct() {
-
+    $this->_device = Kit::device();
   }
 
 }
