@@ -63,4 +63,50 @@ class Kit {
 
   }
 
+  public static function min_html($html) {
+    // salto antes de script y del cierre de script
+    // ayuda a eliminar comentarios de una línea
+    $html = preg_replace('#(<\/script>)#m', PHP_EOL .'</script>', $html);
+    $html = preg_replace('#(<script>)#m', PHP_EOL .'<script>', $html);
+
+    $search = [
+      // comentarios de una línea
+      '#(?<![:,",\'])(\/\/).*(\n)#m',
+      // dos espacios o más que no estén en etiquetas pre
+      '#(!<pre>*<\/pre>)\h{2,}#m',
+      // más de un salto de línea
+      '#\\n\\n#m',
+      '#\\n\\r\\n\\r#m',
+      '#\\r\\n\\r\\n#m',
+      // espacios dentro, entre, antes y después de etiquetas
+      '#>(\s)+<#m',
+      '#(\s)+>#m',
+      '#(\s)+<#m',
+      '#<(\s)+#m',
+      '#>(\s)+<\/#m'
+    ];
+
+    $replace = [
+      // comentarios de una línea
+      '',
+      // dos espacios o más que no estén en etiquetas pre
+      '',
+      // más de un salto de línea
+      '',
+      '',
+      '',
+      // espacios dentro, entre, antes y después de etiquetas
+      '> <',
+      '>',
+      '<',
+      '<',
+      '></'
+    ];
+
+    $html = preg_replace($search, $replace, $html);
+
+    return $html;
+
+  }
+
 }
