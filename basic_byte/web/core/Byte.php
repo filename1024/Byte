@@ -7,11 +7,12 @@ namespace TortuLive;
 class Byte {
 
   private $_error_reporting = FALSE;
+  private $_trace = FALSE;
   private $_cache = TRUE;
+  private $_min_html = TRUE;
   // sessión y cookie
   private $_seconds = (365 * 24 * 3600);
   private $_cookie = [];
-  private $_trace = FALSE;
   // redireciones
   private $_list_rewrite_requests = [];
   // por defecto
@@ -56,9 +57,11 @@ class Byte {
     $config = (object)parse_ini_file(PATH_APP . 'config.ini', true);
     // configuraciones generales
     $this->_error_reporting = $config->general['error_reporting'] ?? $this->_error_reporting;
-    $this->_cache = $config->general['cache'] ?? $this->_cache;
-    $this->seconds = $config->general['seconds'] ?? $this->_seconds;
     $this->_trace = $config->general['trace'] ?? $this->_trace;
+    $this->_cache = $config->general['cache'] ?? $this->_cache;
+    $this->_min_html = $config->general['min_html'] ?? $this->_min_html;
+    $this->seconds = $config->general['seconds'] ?? $this->_seconds;
+
     self::$supervisor = $config->general['supervisor'] ?? self::$supervisor;
     self::$action = $config->general['action'] ?? self::$action;
     self::$frame = $config->general['frame'] ?? self::$frame;
@@ -80,9 +83,10 @@ class Byte {
     $generator = $config->supervisor['generator'] ?? 'Byte';
 
     define('ERROR_REPORTING', $this->_error_reporting);
-    define('CACHE', $this->_cache);
-    define('SECONDS', $this->_seconds);
     define('TRACE', $this->_trace);
+    define('CACHE', $this->_cache);
+    define('MIN_HTML', $this->_min_html);
+    define('SECONDS', $this->_seconds);
     define('LIST_REWRITE_REQUESTS', $this->_list_rewrite_requests);
     define('CHARSET', $charset);
     define('LANG', $lang);
