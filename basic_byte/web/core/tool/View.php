@@ -66,14 +66,6 @@ class View {
 
   public static function response() {
 
-    if (!CACHE) {
-      header("Expires: on, 01 Jan 1970 00:00:00 GMT");
-      header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-      header("Cache-Control: max-age=0, no-store, no-cache, must-revalidate");
-      header("Cache-Control: post-check=0, pre-check=0", false);
-      header("Pragma: no-cache");
-    }
-
     $all_content = ob_get_contents();
     ob_end_clean();
     $time_end = microtime(true);
@@ -94,23 +86,42 @@ class View {
         $trace = ob_get_contents();
       ob_end_clean();
     }
-    // generar siempre una respuesta distinta
-    // para evitar usar la cache del navegador
-    $cache = '';
-    if (!CACHE) {
-      ob_start();
-        echo "<!--{$time_end}-->";
-        $cache = ob_get_contents();
-      ob_end_clean();
-    }
 
     if (count(self::$_head) > 0) {
       self::$_response = preg_replace('/<\/head>/', implode('', self::$_head) . '</head>', self::$_response);
     }
 
-    self::$_response = Kit::min_html(self::$_response);
+    $html_length = mb_strlen(self::$_response);
 
-    echo self::$_response . $trace . $cache;
+    if (MIN_HTML) {
+      $time_min_html = microtime(true);
+      self::$_response = Kit::min_html(self::$_response);
+      $html_min_length = mb_strlen(self::$_response);
+    }
+
+    $time_end = microtime(true);
+
+    if (TRACE) {
+      ob_start();
+        echo '<pre id="trace" style="display: none">';
+        if (MIN_HTML) {
+          $execution_min_html_time = round($time_end - $time_min_html, 4);
+          echo "min_html_time: {$execution_min_html_time}s" . PHP_EOL;
+          echo "html_min_length: {$html_min_length}" . PHP_EOL;
+        }
+        echo "html_length: {$html_length}" . PHP_EOL;
+        echo '</pre>';
+        $trace .= ob_get_contents();
+      ob_end_clean();
+    }
+
+    if (!CACHE) {
+      header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+      header("Pragma: no-cache"); // HTTP 1.0.
+      header("Expires: 0"); // Proxies.
+    }
+
+    echo self::$_response . $trace;
     exit();
 
   }
